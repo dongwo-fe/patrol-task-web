@@ -53,6 +53,7 @@
 <script>
 import { modifyTask } from '@/api/task';
 import { getAllVar } from '@/api/variable';
+import { isValidCron } from 'cron-validator';
 
 export default {
   data() {
@@ -60,8 +61,7 @@ export default {
       if (!value) {
         return callback(new Error('请输入执行时间'));
       }
-      const cronRegex = /^(\*|[0-9]+|\*\/[0-9]+) (\*|[0-9]+|\*\/[0-9]+) (\*|[0-9]+|\*\/[0-9]+) (\*|[0-9]+|\*\/[0-9]+) (\*|[0-9]+|\*\/[0-9]+) ([A-Za-z]+|\*|[0-9]+|\*\/[0-9]+)(?: ([A-Za-z]+))?$/;
-      if (cronRegex.test(value)) {
+      if (isValidCron(value) || isValidCron(value, { seconds: true })) {
         callback();
       } else {
         callback(new Error('请输入正确的Cron格式的执行时间'));
