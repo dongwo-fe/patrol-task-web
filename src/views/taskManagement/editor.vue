@@ -1,16 +1,10 @@
 <template>
   <el-dialog title="创建任务" :visible.sync="showDialog">
     <el-form :model="formdata" :rules="rules" label-width="180px" req ref="ruleForm">
-      <el-form-item
-				label="任务名称"
-        prop="name"
-			>
+      <el-form-item label="任务名称" prop="name">
         <el-input :disabled="isEdit" class="textInput" v-model="formdata.name" />
       </el-form-item>
-      <el-form-item
-        label="检测地址"
-        prop="url"
-      >
+      <el-form-item label="检测地址" prop="url">
         <el-input :disabled="isEdit" class="textInput" type="textarea" v-model="formdata.url" />
         <template>多个地址用英文,隔开</template>
       </el-form-item>
@@ -27,18 +21,13 @@
         </template>
         <el-input class="textInput" v-model="formdata.time" placeholder="请输入Cron表达式" />
       </el-form-item>
-      <el-form-item
-        label="浏览器类型"
-        prop="browser"
-      >
+      <el-form-item label="浏览器类型" prop="browser">
         <el-select v-model="formdata.browser" placeholder="请选择">
           <el-option label="pc" :value="1"></el-option>
           <el-option label="移动端浏览器" :value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item
-        label="变量"
-      >
+      <el-form-item label="变量">
         <el-select multiple v-model="formdata.variable" placeholder="请选择">
           <el-option v-for="item in options" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
@@ -80,19 +69,11 @@ export default {
       },
       options: [],
       rules: {
-        name: [
-          { required: true, message: '任务名称不能为空', trigger: 'blur',}
-        ],
-        url: [
-          { required: true, message: 'url不能为空', trigger: 'blur' }
-        ],
-        time: [
-          { required: true, trigger: 'blur', validator: validateCron}
-        ],
-        browser: [
-          { required: true, message: '请选择浏览器类型', trigger: 'change' }
-        ],
-      }
+        name: [{ required: true, message: '任务名称不能为空', trigger: 'blur' }],
+        url: [{ required: true, message: 'url不能为空', trigger: 'blur' }],
+        time: [{ required: true, trigger: 'blur', validator: validateCron }],
+        browser: [{ required: true, message: '请选择浏览器类型', trigger: 'change' }],
+      },
     };
   },
   mounted() {
@@ -133,22 +114,22 @@ export default {
       this.options = res;
     },
     async submit() {
-				this.$refs['ruleForm'].validate(async (valid) => {
-          if (valid) {
-            try {
-              const data = await modifyTask(this.formdata);
-              console.log(data);
-              this.showDialog = false;
-              this.$emit('onSuccess');
-              } catch (error) {
-              this.$message.error(error.message);
-              console.log('ss:', error.message);
-            }
-          } else {
-            console.log('error submit!!');
-            return false;
+      this.$refs['ruleForm'].validate(async (valid) => {
+        if (valid) {
+          try {
+            const data = await modifyTask(this.formdata);
+            console.log(data);
+            this.showDialog = false;
+            this.$emit('onSuccess');
+          } catch (error) {
+            this.$message.error(error.message);
+            console.log('ss:', error.message);
           }
-        });
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
   },
 };

@@ -17,23 +17,16 @@
     <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column v-for="item in tableColumn" :key="item.id" :label="item.label" :width="item.width">
         <template slot-scope="{ row }">
-          <el-tag v-if="item.showMode === 'tag'" size="small">{{ row[item.content] | typeFilter}}</el-tag>
+          <el-tag v-if="item.showMode === 'tag'" size="small">{{ row[item.content] | typeFilter }}</el-tag>
           <span v-if="item.showMode === 'text'">{{ row[item.content] }}</span>
           <span v-if="item.showMode === 'date'">{{ row[item.content] | dateFormat() }}</span>
-          <el-button
-            v-if="item.showMode === 'checking'"
-            :loading="row[item.content] === 2 ? true : false"
-            size="mini"
-            :type="row[item.content] | checkStatusFilter"
-            plain
-            >{{ row[item.content] | checkFilter }}</el-button
-          >
-          <el-tooltip class="ml10" v-if="item.showMode === 'checking' && row[item.content] === 0" effect="dark" :content="row.failureReason" placement="bottom">
-            <i class="el-icon-question"></i>
-          </el-tooltip>
+          <span v-if="item.showMode === 'type'">{{ row[item.content] | scriptFilter }}</span>
+          <el-popover v-if="item.showMode === 'value'" trigger="hover" width="500" :content="row.isScript === 1 ? row.scripts : row.value">
+            <div slot="reference" class="script_value" alt="测试">{{ row.isScript === 1 ? row.scripts : row.value }}</div>
+          </el-popover>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="350px">
+      <el-table-column fixed="right" label="操作" width="180px">
         <template slot-scope="{ row }">
           <!-- <el-button type="primary" size="mini" @click="goDetails(row)"> 查看 </el-button> -->
           <el-button type="warning" size="mini" @click="handleUpdate(row)"> 修改 </el-button>
@@ -60,22 +53,12 @@ export default {
   directives: { waves },
   components: { Pagination, Editor },
   filters: {
-    statusFilter(status) {
+    scriptFilter(status) {
       const statusMap = {
-        1: 'success',
-        0: 'gray',
-        deleted: 'danger',
+        1: '脚本',
+        0: '固定值',
       };
-      return statusMap[status];
-    },
-    checkStatusFilter(status) {
-      const statusMap = {
-        1: 'success', // 成功
-        0: 'danger', // 失败
-        2: 'primary', // 进行中
-        3: 'warning', // 未执行
-      };
-      return statusMap[status];
+      return statusMap[status] || '';
     },
     typeFilter(status) {
       const statusMap = {
@@ -99,13 +82,14 @@ export default {
       },
       tableColumn: [
         { id: 0, label: 'ID', width: '100', content: 'id', showMode: 'text' },
-        { id: 1, label: '名称', width: '280', content: 'name', showMode: 'text' },
-        { id: 2, label: '类型', width: '150', content: 'type', showMode: 'tag' },
+        { id: 1, label: '名称', width: '150', content: 'name', showMode: 'text' },
+        { id: 2, label: '类型', width: '120', content: 'type', showMode: 'tag' },
         { id: 3, label: 'key', width: '180', content: 'key', showMode: 'text' },
-        { id: 4, label: 'value', content: 'value', showMode: 'text' },
-        { id: 5, label: 'cookieDomain', width: '200', content: 'cookieDomain', showMode: 'text' },
-        { id: 5, label: '创建时间', width: '200', content: 'createdAt', showMode: 'date' },
-        { id: 6, label: '创建人', width: '100', content: 'operator', showMode: 'text' },
+        { id: 4, label: '内容', content: 'value', showMode: 'value' },
+        { id: 8, label: '使用脚本', width: '90', content: 'isScript', showMode: 'type' },
+        { id: 5, label: 'cookieDomain', width: '150', content: 'cookieDomain', showMode: 'text' },
+        { id: 6, label: '创建时间', width: '200', content: 'createdAt', showMode: 'date' },
+        { id: 7, label: '创建人', width: '100', content: 'operator', showMode: 'text' },
       ],
     };
   },
@@ -185,10 +169,17 @@ export default {
 .textRight {
   text-align: right;
 }
-.el-button{
+.el-button {
   margin-left: 10px;
 }
-.ml10{
+.ml10 {
   margin-left: 10px;
+}
+
+.script_value {
+  max-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 </style>
