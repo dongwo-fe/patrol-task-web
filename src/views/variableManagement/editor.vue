@@ -21,6 +21,8 @@
       </el-form-item>
       <el-form-item v-show="formdata.isScript" label="脚本" prop="scripts">
         <el-input class="textInput" v-model="formdata.scripts" type="textarea" :rows="7" placeholder="请输入内容,结果使用最后一行的返回值" />
+        <el-button type="primary" size="mini" @click="testScript">测试返回</el-button>
+        <span>{{ test_result }}</span>
       </el-form-item>
       <template v-if="formdata.type === 3">
         <el-form-item label="cookieDomain">
@@ -35,13 +37,14 @@
   </el-dialog>
 </template>
 <script>
-import { modifyVariable } from '@/api/variable';
+import { modifyVariable, testScript } from '@/api/variable';
 
 export default {
   data() {
     return {
       showDialog: false,
       isUpdate: false,
+      test_result: '',
       formdata: {
         id: 0,
         name: '',
@@ -107,6 +110,16 @@ export default {
           return false;
         }
       });
+    },
+    async testScript() {
+      try {
+        this.test_result = '';
+        const data = await testScript(this.formdata);
+        console.log(data);
+        this.test_result = data;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

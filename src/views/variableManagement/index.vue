@@ -28,7 +28,6 @@
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="180px">
         <template slot-scope="{ row }">
-          <!-- <el-button type="primary" size="mini" @click="goDetails(row)"> 查看 </el-button> -->
           <el-button type="warning" size="mini" @click="handleUpdate(row)"> 修改 </el-button>
           <el-popconfirm title="删除变量可能导致对应的巡检任务执行失败，确定要删除吗？" confirm-button-text="确定" cancel-button-text="取消" @onConfirm="handleDelete(row)">
             <el-button type="danger" slot="reference" size="mini">删除</el-button>

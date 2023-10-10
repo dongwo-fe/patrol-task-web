@@ -2,11 +2,11 @@ import request from '@/utils/request';
 
 // 列表
 export function getVariableList(params) {
-    return request.get('/api_variable/', params);
+  return request.get('/api_variable/', params);
 }
 
 export function getAllVar(params) {
-    return request.get('/api_variable/allVar', params);
+  return request.get('/api_variable/allVar', params);
 }
 
 // 创建
@@ -21,4 +21,9 @@ export function delateVariable(params) {
 
 export function getByID(params) {
   return request.post('/api_variable/getListById', params);
+}
+
+// 测试脚本
+export function testScript(data) {
+  return request.post('/api_variable/test', data);
 }
