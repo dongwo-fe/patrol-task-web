@@ -94,6 +94,7 @@ export default {
           variable: data.variable,
         };
       } else {
+        this.isEdit = false;
         this.formdata = {
           id: 0,
           url: '',

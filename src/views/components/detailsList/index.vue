@@ -22,13 +22,17 @@
             <p :class="item.isError ? 'tag error': 'tag success'">{{ item.isError ? '出错' : '成功' }}</p>
             <el-popover
               placement="top-start"
-              width="400"
+              width="650"
               trigger="hover">
               <div class="info">
                 <p><span class="label">任务id：</span><span class="word">{{ item.taskId }}</span></p>
                 <p><span class="label">巡检地址：</span><span class="word">{{ item.url }}</span></p>
-                <p v-if="item.isError"><span class="label">错误类型：</span><span class="word">{{ item.type }}</span></p>
-                <p v-if="item.isError"><span class="label">错误信息：</span><span class="word">{{ item.errorInfo }}</span></p>
+                <div v-if="item.isError">
+                  <div v-for="(errItem, index) in item.errorInfo" :key="index" class="erroritem">
+                    <p>错误类型：{{ errItem.type }}</p>
+                    <p>错误信息：{{ errItem.errorInfo }}</p>
+                  </div>
+                </div>
               </div>
               <img class="pointer" slot="reference" src="https://ossprod.jrdaimao.com/ac/1695644372019_60x48.png" width="30" height="24" alt="">
             </el-popover>
@@ -197,6 +201,8 @@ export default {
 }
 .info{
   width: 100%;
+  height: 600px;
+  overflow: auto;
   font-size: 14px;
   color: #909399;
   box-sizing: border-box;
@@ -213,6 +219,9 @@ export default {
       word-break: break-all;
       white-space: pre-wrap;
     }
+  }
+  .erroritem{
+    border-top: 1px solid #dadfe6;
   }
 }
 </style>
