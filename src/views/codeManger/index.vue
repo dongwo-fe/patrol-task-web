@@ -119,7 +119,7 @@ export default {
       })
         .then(() => {
           updateCode({ status, id: row.id });
-          this.getlist();
+          that.getlist();
         })
         .catch(() => {
           this.$message({
