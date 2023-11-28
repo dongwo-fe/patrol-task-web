@@ -31,79 +31,91 @@ import Layout from '@/layout';
  * all roles can be accessed
  */
 export const constantRoutes = [
-    {
-        path: '/login',
-        component: () => import('@/views/login/index'),
-        hidden: true,
-    },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true,
+  },
 
-    {
-        path: '/404',
-        component: () => import('@/views/404'),
-        hidden: true,
-    },
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true,
+  },
 
-    {
-        path: '/',
-        component: Layout,
-        redirect: '/taskManagement',
-        children: [
-            {
-                path: 'taskManagement',
-                name: 'TaskManagement',
-                component: () => import('@/views/taskManagement/index'),
-                meta: { title: '巡检管理', icon: 'dashboard' },
-            },
-            {
-              path: '/taskManagementDetails',
-              name: '巡检管理',
-              component: () => import('@/views/taskManagement/details'),
-              meta: {
-                title: '详情'
-              },
-              hidden: true,
-            },
-        ],
-    },
-    {
-      path: '/taskRecord',
-      component: Layout,
-      children: [
-          {
-              path: 'list',
-              name: 'TaskRecord',
-              component: () => import('@/views/taskRecord/index'),
-              meta: { title: '巡检记录', icon: 'el-icon-s-data' },
-          },
-      ],
-    },
-    {
-      path: '/variable',
-      component: Layout,
-      children: [
-          {
-            path: 'list',
-            name: 'VariableManagement',
-            component: () => import('@/views/variableManagement/index'),
-            meta: { title: '变量管理', icon: 'el-icon-s-tools' },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/taskManagement',
+    children: [
+      {
+        path: 'taskManagement',
+        name: 'TaskManagement',
+        component: () => import('@/views/taskManagement/index'),
+        meta: { title: '巡检管理', icon: 'dashboard' },
+      },
+      {
+        path: '/taskManagementDetails',
+        name: '巡检管理',
+        component: () => import('@/views/taskManagement/details'),
+        meta: {
+          title: '详情',
         },
-      ],
-    },
-    { path: '*', redirect: '/404', hidden: true },
+        hidden: true,
+      },
+    ],
+  },
+  {
+    path: '/taskRecord',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        name: 'TaskRecord',
+        component: () => import('@/views/taskRecord/index'),
+        meta: { title: '巡检记录', icon: 'el-icon-s-data' },
+      },
+    ],
+  },
+  {
+    path: '/variable',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        name: 'VariableManagement',
+        component: () => import('@/views/variableManagement/index'),
+        meta: { title: '变量管理', icon: 'el-icon-s-tools' },
+      },
+    ],
+  },
+  {
+    path: '/codeManger',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        name: 'codeManger',
+        component: () => import('@/views/codeManger/index'),
+        meta: { title: 'CODE管理', icon: 'el-icon-warning' },
+      },
+    ],
+  },
+  { path: '*', redirect: '/404', hidden: true },
 ];
 export const asyncRoutes = [];
 const createRouter = () =>
-    new Router({
-        // mode: 'history', // require service support
-        scrollBehavior: () => ({ y: 0 }),
-        routes: constantRoutes,
-    });
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes,
+  });
 
 const router = createRouter();
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-    const newRouter = createRouter();
-    router.matcher = newRouter.matcher; // reset router
+  const newRouter = createRouter();
+  router.matcher = newRouter.matcher; // reset router
 }
 export default router;
