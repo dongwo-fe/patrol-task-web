@@ -79,7 +79,7 @@ export default {
         { id: 1, label: '备注和策略', content: 'remark', showMode: 'text' },
         { id: 2, label: '紧急程度', width: '80', content: 'state', showMode: 'text' },
         { id: 5, label: '创建时间', width: '180', content: 'updatedAt', showMode: 'date' },
-        { id: 6, label: '创建人', width: '80', content: 'operator', showMode: 'text' },
+        { id: 6, label: '创建人', width: '80', content: 'username', showMode: 'text' },
         { id: 2, label: '状态', width: '80', content: 'status', showMode: 'tag' },
       ],
     };
